@@ -4,14 +4,13 @@
 import cmd
 from models.base_model import BaseModel
 from models import storage
-import shlex
 import json
 
 class HBNBCommand(cmd.Cmd):
     """Command interpreter class."""
     
     prompt = "(hbnb) "
-
+    
     def do_quit(self, arg):
         """Quit command to exit the program"""
         exit()
@@ -27,7 +26,7 @@ class HBNBCommand(cmd.Cmd):
 
     def do_create(self, arg):
         """Create a new instance of BaseModel"""
-        args = shlex.split(arg)
+        args = arg.split()
         if not args:
             print("** class name missing **")
         elif args[0] not in BaseModel.__subclasses__():
@@ -39,7 +38,7 @@ class HBNBCommand(cmd.Cmd):
 
     def do_show(self, arg):
         """Prints the string representation of an instance"""
-        args = shlex.split(arg)
+        args = arg.split()
         if not args or args[0] not in BaseModel.__subclasses__():
             print("** class name missing **")
         elif len(args) < 2:
@@ -54,7 +53,7 @@ class HBNBCommand(cmd.Cmd):
 
     def do_destroy(self, arg):
         """Deletes an instance based on the class name and id"""
-        args = shlex.split(arg)
+        args = arg.split()
         if not args or args[0] not in BaseModel.__subclasses__():
             print("** class name missing **")
         elif len(args) < 2:
@@ -70,7 +69,7 @@ class HBNBCommand(cmd.Cmd):
 
     def do_all(self, arg):
         """Prints all string representation of all instances"""
-        args = shlex.split(arg)
+        args = arg.split()
         obj_list = []
         obj_dict = storage.all()
         if args and args[0] not in BaseModel.__subclasses__():
