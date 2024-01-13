@@ -10,6 +10,7 @@ class HBNBCommand(cmd.Cmd):
     """Command interpreter class."""
     
     prompt = "(hbnb) "
+    classes = {'BaseModel': BaseModel}
     
     def do_quit(self, arg):
         """Quit command to exit the program"""
@@ -29,18 +30,22 @@ class HBNBCommand(cmd.Cmd):
         args = arg.split()
         if not args:
             print("** class name missing **")
-        elif args[0] not in BaseModel.__subclasses__():
+        elif args[0] not in self.classes.keys():
             print("** class doesn't exist **")
         else:
-            new_instance = BaseModel()
+            new_instance = self.classes[arg]()
             new_instance.save()
             print(new_instance.id)
 
     def do_show(self, arg):
         """Prints the string representation of an instance"""
         args = arg.split()
-        if not args or args[0] not in BaseModel.__subclasses__():
-            print("** class name missing **")
+        if len(args) == 0:
+            print('** class name missing **')
+            return
+        elif args[0] not in self.classes:
+            print("** class doesn't exist **")
+            return
         elif len(args) < 2:
             print("** instance id missing **")
         else:
@@ -54,8 +59,12 @@ class HBNBCommand(cmd.Cmd):
     def do_destroy(self, arg):
         """Deletes an instance based on the class name and id"""
         args = arg.split()
-        if not args or args[0] not in BaseModel.__subclasses__():
-            print("** class name missing **")
+        if len(args) == 0:
+            print('** class name missing **')
+            return
+        elif args[0] not in self.classes:
+            print("** class doesn't exist **")
+            return
         elif len(args) < 2:
             print("** instance id missing **")
         else:
@@ -72,7 +81,7 @@ class HBNBCommand(cmd.Cmd):
         args = arg.split()
         obj_list = []
         obj_dict = storage.all()
-        if args and args[0] not in BaseModel.__subclasses__():
+        if args and args[0] not in self.classes:
             print("** class doesn't exist **")
             return
         for key, value in obj_dict.items():
@@ -84,8 +93,12 @@ class HBNBCommand(cmd.Cmd):
         """Updates an instance based on the class name and id"""
         args = shlex.split(arg)
         obj_dict = storage.all()
-        if not args or args[0] not in BaseModel.__subclasses__():
-            print("** class name missing **")
+        if len(args) == 0:
+            print('** class name missing **')
+            return
+        elif args[0] not in self.classes:
+            print("** class doesn't exist **")
+            return
         elif len(args) < 2:
             print("** instance id missing **")
         else:
