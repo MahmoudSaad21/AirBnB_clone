@@ -1,0 +1,7 @@
+#!/bin/bash
+     git add .
+     echo 'whats commit message:'; read message;
+     git commit -am "$message"
+     git push
+     echo '----------'
+     sleep 2
